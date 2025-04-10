@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import Ticket from "../models/ticket.model";
 
 const router = express.Router();
@@ -18,7 +18,7 @@ router.get("/:id", async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
-      return res.status(404).json({ message: "Ticket not found" });
+      res.status(404).json({ message: "Ticket not found" });
     }
     res.json(ticket);
   } catch (error) {
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update ticket
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req: Request, res: Response) => {
   try {
     const { status, notes } = req.body;
     const ticket = await Ticket.findByIdAndUpdate(
@@ -36,7 +36,7 @@ router.patch("/:id", async (req, res) => {
       { new: true }
     );
     if (!ticket) {
-      return res.status(404).json({ message: "Ticket not found" });
+      res.status(404).json({ message: "Ticket not found" });
     }
     res.json(ticket);
   } catch (error) {
